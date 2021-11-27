@@ -21,4 +21,8 @@ app.get("/", async (req, res) => {
     res.render("index", {articles})
 })
 
-app.listen(5000);
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => {
+    console.log(`Connected to http://localhost:${PORT}`)
+});
