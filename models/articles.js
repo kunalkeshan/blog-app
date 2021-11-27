@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-const toMarkdown = require("to-markdown")
+const {marked} = require("marked");
+const markDownIt = require("markdown-it")({
+    html: true,
+});
 const slugify = require("slugify");
 const createDomPurify = require("dompurify");
 const {JSDOM} = require("jsdom");
@@ -37,7 +40,7 @@ articleSchema.pre("validate", function(next){
         this.slug = slugify(this.title, {lower: true, strict: true});
     }
     if(this.markdown){
-        this.sanitizedHtml = dompurify.sanitize(toMarkdown(this.markdown))
+        this.sanitizedHtml = dompurify.sanitize(marked.parse(this.markdown))
     }
     return next();
 })

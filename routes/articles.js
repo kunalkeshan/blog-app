@@ -7,14 +7,13 @@ Router.get("/new", (req, res) => {
 
 Router.get("/edit/:id", async (req, res) => {
     const article =  await Article.findById(req.params.id);
-    console.log(article)
     res.render("articles/edit", {article: article})
 });
 
 Router.get("/:slug", async (req, res) => {
     const article = await Article.findOne({slug: req.params.slug});
     if(article == null) res.redirect("/");
-    res.render("articles/show", {article: article})
+    else res.render("articles/show", {article: article})
 })
 
 Router.post("/", async (req, res, next) => {
@@ -23,7 +22,8 @@ Router.post("/", async (req, res, next) => {
 }, saveArticleAndRedirect("new"))
 
 Router.put("/:id", async (req, res, next) => {
-    req.article = new Article();
+    req.article = await Article.findById(req.params.id);
+    console.log()
     next();
 }, saveArticleAndRedirect("edit"))
 
